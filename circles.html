@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Circles</title>
+	<script type="text/javascript" src="paperjs/dist/paper-full.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="circles.css">
+
+	<script type="text/paperscript" canvas="myCanvas">
+
+		var keyData = {
+			a: {
+				color: "purple",
+				sound: new Howl({
+					src: ['sounds/bubbles.mp3']
+				})
+			},
+			b: {
+				color: "#519186",
+				sound: new Howl({
+					src: ['sounds/corona.mp3']
+				})
+			},
+			c: {
+				color: "#722c87",
+				sound: new Howl({
+					src: ['sounds/dotted-spiral.mp3']
+				})
+			},
+			d: {
+				color: "yellow",
+				sound: new Howl({
+					src: ['sounds/confetti.mp3']
+				})
+			},
+			e: {
+				color: "#2c8759",
+				sound: new Howl({
+					src: ['sounds/flash-1.mp3']
+				})
+			},
+			f: {
+				color: "#54ad47",
+				sound: new Howl({
+					src: ['sounds/flash-2.mp3']
+				})
+			},
+			g: {
+				color: "#5947cc",
+				sound: new Howl({
+					src: ['sounds/flash-3.mp3']
+				})
+			},
+			h: {
+				color: "#411147",
+				sound: new Howl({
+					src: ['sounds/glimmer.mp3']
+				})
+			},
+			i: {
+				color: "#7dc189",
+				sound: new Howl({
+					src: ['sounds/moon.mp3']
+				})
+			},
+			j: {
+				color: "#b78d33",
+				sound: new Howl({
+					src: ['sounds/pinwheel.mp3']
+				})
+			},
+			k: {
+				color: "#b7d8b6",
+				sound: new Howl({
+					src: ['sounds/piston-1.mp3']
+				})
+			},
+			l: {
+				color: "#2d512c",
+				sound: new Howl({
+					src: ['sounds/piston-2.mp3']
+				})
+			},
+			m: {
+				color: "#95d394",
+				sound: new Howl({
+					src: ['sounds/piston-3.mp3']
+				})
+			},
+			n: {
+				color: "#1bce18",
+				sound: new Howl({
+					src: ['sounds/prism-1.mp3']
+				})
+			},
+			o: {
+				color: "#8775a8",
+				sound: new Howl({
+					src: ['sounds/prism-2.mp3']
+				})
+			},
+			p: {
+				color: "#221142",
+				sound: new Howl({
+					src: ['sounds/prism-3.mp3']
+				})
+			},
+			q: {
+				color: "#9ad3bc",
+				sound: new Howl({
+					src: ['sounds/splits.mp3']
+				})
+			},
+			r: {
+				color: "#384c44",
+				sound: new Howl({
+					src: ['sounds/squiggle.mp3']
+				})
+			},
+			s: {
+				color: "#b4ff9b",
+				sound: new Howl({
+					src: ['sounds/strike.mp3']
+				})
+			},
+			t: {
+				color: "#672d89",
+				sound: new Howl({
+					src: ['sounds/suspension.mp3']
+				})
+			},
+			u: {
+				color: "#ea27bd",
+				sound: new Howl({
+					src: ['sounds/timer.mp3']
+				})
+			},
+			v: {
+				color: "#5d3170",
+				sound: new Howl({
+					src: ['sounds/ufo.mp3']
+				})
+			},
+			w: {
+				color: "#b2aff7",
+				sound: new Howl({
+					src: ['sounds/veil.mp3']
+				})
+			},
+			x: {
+				color: "#7dc189",
+				sound: new Howl({
+					src: ['sounds/wipe.mp3']
+				})
+			},
+			y: {
+				color: "#9139cc",
+				sound: new Howl({
+					src: ['sounds/zig-zag.mp3']
+				})
+			},
+			z: {
+				color: "#95d68b",
+				sound: new Howl({
+					src: ['sounds/bubbles2.mp3']
+				})
+			},
+		}
+		
+		var circles = [];
+
+		function onKeyDown(event) {
+			if (keyData[event.key]) {
+				var maxPoint = new Point(view.size.width, view.size.height);
+				var randomPoint = Point.random();
+				var point = maxPoint * randomPoint;
+				var newCircle = new Path.Circle(point, 500);
+				newCircle.fillColor = keyData[event.key].color;
+				keyData[event.key].sound.play();
+				circles.push(newCircle);
+			}
+		}
+
+		// var text = new PointText(new Point(100, 100);
+		// text.justification = 'center';
+		// text.fillColor = 'white';
+		// text.content = 'The contents of the point text';
+
+		var text = new PointText({
+		    point: [0.33*view.size.width, 0.5*view.size.height],
+		    content: 'Press A to Z to make a sound!',
+		    fillColor: 'white',
+		    fontFamily: 'Courier New',
+		    fontWeight: 'bold',
+		    fontSize: 25
+		});
+
+		function onFrame(event) {
+			for(var i = 0; i < circles.length; i++) {
+				circles[i].fillColor.hue += 1;
+				circles[i].scale(.87);
+				if (circles[i].area < 1) {
+					circles[i].remove();
+					circles.splice(i,1);
+				}
+			}
+			if (text.opacity > 0) {
+				text.opacity *= .96;
+			}
+		}
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+</canvas>
+</body>
+</html>
